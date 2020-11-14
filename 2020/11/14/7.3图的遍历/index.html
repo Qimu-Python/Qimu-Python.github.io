@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>7.3图的遍历 | 亓木</title><meta name="description" content="7.3图的遍历图的遍历就是从图中的某个顶点出发，按某种方法对图中的所有顶点访问且 仅访问一次。图的遍历比起树的遍历要复杂得多。由于图中顶点关系是任意的，即图中顶点之间是多对多的关系，图可能是非连通图，图中还可能有回路存在，因此在访问了 某个顶点后，可能沿着某条路径搜索后又回到该顶点上。为了保证图中的各顶点 在遍历过程中访问且仅访问一次，需要为每个顶点设一个访问标志，因此要为图设置一个访问标志数组"><meta name="keywords" content="图"><meta name="author" content="Qimu"><meta name="copyright" content="Qimu"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="http://www.qimubiji.cloud/favicon.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="crossorigin"/><link rel="dns-prefetch" href="https://fonts.googleapis.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="dns-prefetch" href="//busuanzi.ibruce.info"/><meta name="twitter:card" content="summary"><meta name="twitter:title" content="7.3图的遍历"><meta name="twitter:description" content="7.3图的遍历图的遍历就是从图中的某个顶点出发，按某种方法对图中的所有顶点访问且 仅访问一次。图的遍历比起树的遍历要复杂得多。由于图中顶点关系是任意的，即图中顶点之间是多对多的关系，图可能是非连通图，图中还可能有回路存在，因此在访问了 某个顶点后，可能沿着某条路径搜索后又回到该顶点上。为了保证图中的各顶点 在遍历过程中访问且仅访问一次，需要为每个顶点设一个访问标志，因此要为图设置一个访问标志数组"><meta name="twitter:image" content="http://www.qimubiji.cloud/%E5%9B%BE.png"><meta property="og:type" content="article"><meta property="og:title" content="7.3图的遍历"><meta property="og:url" content="http://qimubiji.club/2020/11/14/7.3%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/"><meta property="og:site_name" content="亓木"><meta property="og:description" content="7.3图的遍历图的遍历就是从图中的某个顶点出发，按某种方法对图中的所有顶点访问且 仅访问一次。图的遍历比起树的遍历要复杂得多。由于图中顶点关系是任意的，即图中顶点之间是多对多的关系，图可能是非连通图，图中还可能有回路存在，因此在访问了 某个顶点后，可能沿着某条路径搜索后又回到该顶点上。为了保证图中的各顶点 在遍历过程中访问且仅访问一次，需要为每个顶点设一个访问标志，因此要为图设置一个访问标志数组"><meta property="og:image" content="http://www.qimubiji.cloud/%E5%9B%BE.png"><meta property="article:published_time" content="2020-11-14T04:22:41.463Z"><meta property="article:modified_time" content="2020-07-03T02:22:16.194Z"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>var autoChangeMode = '1'
+var t = Cookies.get("theme")
+if (autoChangeMode == '1'){
+  var isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+  var isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+  var isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined){
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport){
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour < 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+  }
+  } else if (t == 'light') activateLightMode()
+  else activateDarkMode()
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><link rel="canonical" href="http://qimubiji.club/2020/11/14/7.3%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/"><link rel="prev" title="7.4图的连通性" href="http://qimubiji.club/2020/11/14/7.4%E5%9B%BE%E7%9A%84%E8%BF%9E%E9%80%9A%E6%80%A7/"><link rel="next" title="7.5有向无环图应用之拓扑排序" href="http://qimubiji.club/2020/11/14/7.5%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE%E5%BA%94%E7%94%A8%E4%B9%8B%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  highlightShrink: 'false',
+  isFontAwesomeV5: true,
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+  
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isSidebar: true  
+  }</script><noscript><style>
+#page-header {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="http://www.qimubiji.cloud/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">58</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">16</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><i class="fa fa-arrow-right on" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#7-3图的遍历"><span class="toc-number">1.</span> <span class="toc-text">7.3图的遍历</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、深度优先搜索"><span class="toc-number">1.1.</span> <span class="toc-text">1、深度优先搜索</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#（1）用邻接矩阵方式实现深度优先搜索"><span class="toc-number">1.1.1.</span> <span class="toc-text">（1）用邻接矩阵方式实现深度优先搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（2）用邻接表方式实现深度优先搜索"><span class="toc-number">1.1.2.</span> <span class="toc-text">（2）用邻接表方式实现深度优先搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（3）用非递归过程实现深度优先搜索"><span class="toc-number">1.1.3.</span> <span class="toc-text">（3）用非递归过程实现深度优先搜索</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、广度优先搜索"><span class="toc-number">1.2.</span> <span class="toc-text">2、广度优先搜索</span></a></li></ol></li></ol></div></div></div><div id="body-wrap"><div class="post-bg" id="nav" style="background-image: url(http://www.qimubiji.cloud/%E5%9B%BE.png)"><div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">亓木</a></span><span class="pull_right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span></span></div><div id="post-info"><div id="post-title"><div class="posttitle">7.3图的遍历</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2020-11-14 12:22:41"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-11-14</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2020-07-03 10:22:16"><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-07-03</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/">数据结构笔记</a></span></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="post-meta__icon far fa-file-word" aria-hidden="true"></i><span>字数总计:</span><span class="word-count">3k</span><span class="post-meta__separator">|</span><i class="post-meta__icon far fa-clock" aria-hidden="true"></i><span>阅读时长: 10 分钟</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="fa fa-eye post-meta__icon" aria-hidden="true"> </i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-commentcount"></span></div></div></div></div><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="7-3图的遍历"><a href="#7-3图的遍历" class="headerlink" title="7.3图的遍历"></a>7.3图的遍历</h1><p>图的遍历就是从图中的某个顶点出发，按某种方法对图中的所有顶点访问且 仅访问一次。<br>图的遍历比起树的遍历要复杂得多。由于图中顶点关系是任意的，即图中顶点之间是多对多的关系，图可能是非连通图，图中还可能有回路存在，因此在访问了 某个顶点后，可能沿着某条路径搜索后又回到该顶点上。为了保证图中的各顶点 在遍历过程中访问且仅访问一次，需要为每个顶点设一个访问标志，因此要为图设置一个<strong>访问标志数组 visited[n]</strong>，用于标示图中每个顶点是否被访问过，它的初 始值为 0(假)，一旦顶点 vi访问过，则置 visited[i]为 1(真)，以表示该顶点已访问。</p>
+<p> 对于图的遍历，通常有两种方法，即深度优先搜索和广度优先搜索。</p>
+<h2 id="1、深度优先搜索"><a href="#1、深度优先搜索" class="headerlink" title="1、深度优先搜索"></a>1、深度优先搜索</h2><p>深度优先搜索（Depth_First Search，DFS）是指按照深度方向搜索，它类似 于树的先根遍历，是树的先根遍历的推广。 </p>
+<p>深度优先搜索的基本思想是： </p>
+<ul>
+<li>（1） 从图中某个顶点 v0出发，首先访问 v0。</li>
+<li>（2） 找出刚访问过的顶点的第一个未被访问的邻接点，然后访问该顶点。 以该定点为新顶点，重复此步骤，直到刚访问过的顶点没有未被访问的 邻接点为止。 </li>
+<li>（3） 返回前一个访问过的且仍有未被访问的邻接点的顶点，找出该顶点 的下一个未被访问的邻接点，访问该顶点。然后执行步骤（2）。 </li>
+</ul>
+<p>下图给出了一个深度优先搜索的过程图示，其中<strong>实</strong>箭头代表<strong>访问</strong>方向，<strong>虚</strong>箭头代表<strong>回溯</strong>方向，箭头旁边的数字代表搜索顺序，A 为起始顶点。 </p>
+<p>首先访问 A，然后按图中序号对应的顺序进行深度优先搜索。图中序号对应 步骤的解释如下： </p>
+<ul>
+<li><p>（1）顶点 A 的未访邻接点有 B、E、D，首先访问 A 的第一个未访邻接点 B； </p>
+</li>
+<li><p>（2）顶点 B 的未访邻接点有 C、E，首先访问 B 的第一个未访邻接点 C； </p>
+</li>
+<li><p>（3）顶点 C 的未访邻接点只有 F，访问 F； </p>
+</li>
+<li><p>（4）顶点 F 没有未访邻接点，回溯到 C； </p>
+</li>
+<li><p>（5）顶点 C 已没有未访邻接点，回溯到 B； </p>
+</li>
+<li><p>（6）顶点 B 的未访邻接点只剩下 E，访问 E； </p>
+</li>
+<li><p>（7）顶点 E 的未访邻接点只剩下 G，访问 G； </p>
+</li>
+<li><p>（8）顶点 G 的未访邻接点有 D、H，首先访问 G 的第一个未访邻接点 D； </p>
+</li>
+<li><p>（9）顶点 D 没有未访邻接点，回溯到 G； </p>
+</li>
+<li><p>（10）顶点 G 的未访邻接点只剩下 H，访问 H； </p>
+</li>
+<li><p>（11）顶点 H 的未访邻接点只有 I，访问 I； </p>
+</li>
+<li><p>（12）顶点 I 没有未访邻接点，回溯到 H； </p>
+</li>
+<li><p>（13）顶点 H 已没有未访邻接点，回溯到 G； </p>
+</li>
+<li><p>（14）顶点 G 已没有未访邻接点，回溯到 E； </p>
+</li>
+<li><p>（15）顶点 E 已没有未访邻接点，回溯到 B； </p>
+</li>
+<li><p>（16）顶点 B 已没有未访邻接点，回溯到 A。 </p>
+<p>至此，深度优先搜索过程结束，相应的访问序列为：A、B、C、F、E、G、 D、H、I。<br><img src="https://img-blog.csdnimg.cn/2020070309444631.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dpdGhvdXRFbmRGcmVl,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+</li>
+</ul>
+<p>【<strong>算法思想</strong>】<br>首先实现对 v0所在连通子图的深度优先搜索，用递归算法实现的基本过程为：<br> （1） 访问出发点 v0 。<br> （2） 依次以 v0的未被访问的邻接点为出发点，深度优先搜索图，直至图中 所有与 v0 有路径相通的顶点都被访问。 若是非连通图，则图中一定还有顶点未被访问，需要从图中另选一个未被访 问的顶点作为起始点，重复上述深度优先搜索过程，直至图中所有顶点均被访问 过为止。 </p>
+<p>【<strong>算法描述</strong>】 </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> True  1 </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> False  0 </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Error –1   <span class="comment">/*出错*/</span> </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Ok 1 int visited[MAX_VERTEX_NUM];   <span class="comment">/*访问标志数组*/</span> </span></span><br><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">TraverseGraph</span> <span class="params">(Graph g)</span> <span class="comment">/* 在图 g 中寻找未被访问的顶点作为起始点，并调用深度优先搜索过程进行遍 历。Graph 表示图的一种存储结构，如邻接矩阵或邻接表等 */</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">	<span class="keyword">for</span> (vi=<span class="number">0</span>; vi&lt;g.vexnum; vi++)  </span><br><span class="line">		visited[vi]=False ;   <span class="comment">/*访问标志数组初始*/</span> </span><br><span class="line">	<span class="keyword">for</span>( vi=<span class="number">0</span>; vi&lt;g.vexnum; vi++)   <span class="comment">/* 循环调用深度优先遍历连通子图的操作 */</span> <span class="comment">/* 若图 g 是连通图，则此调用只执行一次 */</span>   </span><br><span class="line">		<span class="keyword">if</span> (！visited[vi] )  </span><br><span class="line">			DepthFirstSearch(g，vi); </span><br><span class="line">&#125;<span class="comment">/* TraverseGraph */</span></span><br></pre></td></tr></table></figure>
+<p>【<strong>深度优先遍历图 g 算法</strong>】</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span>  DepthFirstSearch（Graph g,  <span class="keyword">int</span> v0） <span class="comment">/* 深度遍历 v0 所在的连通子图 */</span> </span><br><span class="line">&#123; </span><br><span class="line">	visit(v0);  </span><br><span class="line">	visited[v0] =True;     <span class="comment">/*访问顶点 v0，并置访问标志数组相应分量 值*/</span> </span><br><span class="line">	w=FirstAdjVertex(g,v0); </span><br><span class="line">	<span class="keyword">while</span> ( w!=<span class="number">-1</span>)                <span class="comment">/*邻接点存在.*/</span>   </span><br><span class="line">	&#123; </span><br><span class="line">		<span class="keyword">if</span>(! visited [w] )   </span><br><span class="line">		DepthFirstSearch(g,w);    <span class="comment">/* 递 归 调 用 DepthFirstSearch*/</span>    </span><br><span class="line">		w=NextAdjVertex(g,v0,w);   <span class="comment">/*找下一个邻接点*/</span>   </span><br><span class="line">	&#125; </span><br><span class="line">&#125;<span class="comment">/*DepthFirstSearch*/</span></span><br></pre></td></tr></table></figure>
+<p>【<strong>深度优先遍历 v0 所在的连通子图算法</strong>】<br>上述算法中对于 FirstAdjVertex（g，v0）以及 NextAdjVertex（g，v0，w）并 没有具体实现。如果图的存储结构不同，对应操作的实现方法不同，时间耗费也不同。下面分别用邻接矩阵和邻接表具体实现。 </p>
+<h3 id="（1）用邻接矩阵方式实现深度优先搜索"><a href="#（1）用邻接矩阵方式实现深度优先搜索" class="headerlink" title="（1）用邻接矩阵方式实现深度优先搜索"></a>（1）用邻接矩阵方式实现深度优先搜索</h3><p>【<strong>算法描述</strong>】</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">DepthFirstSearch</span><span class="params">(AdjMatrix g,  <span class="keyword">int</span> v0)</span>   <span class="comment">/* 图 g 为邻接矩阵类型 AdjMatrix */</span>  </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">	visit(v0); </span><br><span class="line">	visited[v0]=True;   </span><br><span class="line">	<span class="keyword">for</span> ( vj=<span class="number">0</span>;vj&lt;n;vj++)     </span><br><span class="line">		<span class="keyword">if</span> (!visited[vj] &amp;&amp; g.arcs[v0][vj].adj==<span class="number">1</span>)         </span><br><span class="line">			DepthFirstSearch(g, vj); </span><br><span class="line">&#125;<span class="comment">/* DepthFirstSearch */</span></span><br></pre></td></tr></table></figure>
+<p> 【<strong>采用邻接矩阵的 DepthFirstSearch 算法</strong>】 </p>
+<h3 id="（2）用邻接表方式实现深度优先搜索"><a href="#（2）用邻接表方式实现深度优先搜索" class="headerlink" title="（2）用邻接表方式实现深度优先搜索"></a>（2）用邻接表方式实现深度优先搜索</h3><p>【<strong>算法描述</strong>】 </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">DepthFirstSearch</span><span class="params">(AdjList g,  <span class="keyword">int</span> v0)</span>    <span class="comment">/*图 g 为邻接表类型 AdjList */</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">	visit(v0);</span><br><span class="line">	visited[v0]=True; </span><br><span class="line">	p=g.vertex[v0].firstarc; </span><br><span class="line">	<span class="keyword">while</span>( p!=<span class="literal">NULL</span> )    </span><br><span class="line">	&#123; </span><br><span class="line">		<span class="keyword">if</span> (! visited[p-&gt;adjvex])      </span><br><span class="line">		DepthFirstSearch(g,  p-&gt;adjvex);    </span><br><span class="line">		p=p-&gt;nextarc;    </span><br><span class="line">	&#125; </span><br><span class="line">&#125;<span class="comment">/*DepthFirstSearch*/</span></span><br></pre></td></tr></table></figure>
+<p>【<strong>采用邻接表的 DepthFirstSearch 算法</strong>】 </p>
+<p>以邻接表作为存储结构，查找每个顶点的邻接点的时间复杂度为 O(e)， 其 中 e 是无向图中的边数或有向图中弧数, 则深度优先搜索图的时间复杂度为 O(n+e)。</p>
+<h3 id="（3）用非递归过程实现深度优先搜索"><a href="#（3）用非递归过程实现深度优先搜索" class="headerlink" title="（3）用非递归过程实现深度优先搜索"></a>（3）用非递归过程实现深度优先搜索</h3><p>【<strong>算法思想</strong>】<br>（1） 首先将 v0 入栈；<br>（2） 只要栈不空，则重复下述处理：</p>
+<ul>
+<li><p>a) 栈顶顶点出栈，如果未访问，则访问并置访问标志； </p>
+</li>
+<li><p>b) 然后将 v0 所有未访问的邻接点入栈。  </p>
+<p>【<strong>算法描述</strong>】    非递归形式的 DepthFirstSearch </p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">DepthFirstSearch</span><span class="params">(Graph g,  <span class="keyword">int</span> v0)</span>   <span class="comment">/* 从 v0 出发深度优先搜索图 g */</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">	InitStack(S);  <span class="comment">/*初始化空栈*/</span> </span><br><span class="line">	Push(S, v0); </span><br><span class="line">	<span class="keyword">while</span> ( ! Empty(S))   </span><br><span class="line">	&#123; </span><br><span class="line">		v=Pop(S);   </span><br><span class="line">		<span class="keyword">if</span> (!visited[v])             <span class="comment">/*栈中可能有重复顶点*/</span> </span><br><span class="line">		&#123; </span><br><span class="line">			visit(v);  </span><br><span class="line">			visited[v]=True; </span><br><span class="line">		&#125; </span><br><span class="line">		w= FirstAdjVertex (g, v);         <span class="comment">/*求 v 的第一个邻接点*/</span> </span><br><span class="line">		<span class="keyword">while</span> (w!=<span class="number">-1</span> )    </span><br><span class="line">		&#123; </span><br><span class="line">			<span class="keyword">if</span> (!visited[w])  </span><br><span class="line">			Push(S, w); </span><br><span class="line">			w=NextAdjVertex (g, v, w);   <span class="comment">/*求 v 相对于 w 的下一个邻接点*/</span> </span><br><span class="line">		&#125;       </span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2、广度优先搜索"><a href="#2、广度优先搜索" class="headerlink" title="2、广度优先搜索"></a>2、广度优先搜索</h2><p>广度优先搜索（Breadth_First Search）是指按照广度方向搜索，它类似于树 的层次遍历，是树的按层次遍历的推广。 </p>
+<p>广度优先搜索的基本思想是： </p>
+<ul>
+<li>（1）从图中某个顶点 v0出发，首先访问 v0。 </li>
+<li>（2）依次访问 v0的各个未被访问的邻接点。 </li>
+<li>（3）分别从这些邻接点（端结点）出发，依次访问它们的各个未被访问的 邻接点（新的端结点）。访问时应保证：如果 Vi和 Vk为当前端结点，且 Vi在 Vk之前被访问，则 Vi的所有未被访问的邻接点应在 Vk的所有未被 访问的邻接点之前访问。重复（3），直到所有端结点均没有未被访问 的邻接点为止。</li>
+</ul>
+<p>若此时还有顶点未被访问，则选一个未被访问的顶点作为起始点，重复上述过程，直至所有顶点均被访问过为止。 </p>
+<p>下图给出了一个广度优先搜索过程图示，其中箭头代表搜索方向，箭头旁边 的数字代表搜索顺序，A 为起始顶点。 </p>
+<p>首先访问 A，然后按图中序号对应的顺序进行广度优先搜索。图中序号对应 步骤的解释如下： </p>
+<ul>
+<li>（1）顶点 A 的未访邻接点有 B、E、D，首先访问 A 的第一个未访邻接点 B； </li>
+<li>（2）访问 A 的第二个未访邻接点 E； </li>
+<li>（3）访问 A 的第三个未访邻接点 D； </li>
+<li>（4）由于 B 在 E、D 之前被访问，故接下来应访问 B 的未访邻接点。B 的未访邻接点只有 C，所以访问 C； </li>
+<li>（5）由于 E 在 D、C 之前被访问，故接下来应访问 E 的未访邻接点。E 的未访邻接点只有 G，所以访问 G； </li>
+<li>（6）由于 D 在 C、G 之前被访问，故接下来应访问 D 的未访邻接点。D 没有未访邻接点，所以直接考虑在 D 之后被访问的顶点 C，即接下 来应访问 C 的未访邻接点。C 的未访邻接点只有 F，所以访问 F； </li>
+<li>（7）由于 G 在 F 之前被访问，故接下来应访问 G 的未访邻接点。G 的未 访邻接点只有 H，所以访问 H； </li>
+<li>（8）由于 F 在 H 之前被访问，故接下来应访问 F 的未访邻接点。F 没有 未访邻接点，所以直接考虑在 F 之后被访问的顶点 H，即接下来应 访问 H 的未访邻接点。H 的未访邻接点只有 I，所以访问 I。 </li>
+</ul>
+<p>至此，广度优先搜索过程结束，相应的访问序列为：A、B、E、D、C、G、 F、H、I。<br><img src="https://img-blog.csdnimg.cn/20200703095652834.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dpdGhvdXRFbmRGcmVl,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>在遍历过程中需要设立一个访问标志数组 visited[n]，其初值为“False”,一 旦某个顶点被访问，则置相应的分量为“True”。同时，需要辅助队列 Q，以便 实现要求：“如果 Vi和 Vk为当前端结点，且 Vi在 Vk之前被访问，则 Vi的所有 未被访问的邻接点应在 Vk的所有未被访问的邻接点之前访问。” </p>
+<p>广度优先搜索连通子图的算法如下：<br>【<strong>算法思想</strong>】 </p>
+<ul>
+<li>（1） 首先访问 v0 并置访问标志，然后将 v0 入队； </li>
+<li>（2） 只要队不空，则重复下述处理： ①队头结点 v 出队；  ②对 v 的所有邻接点 w，如果 w 未访问，则访问 w 并置访问标志，然后将 w 入队。</li>
+</ul>
+<p>【<strong>算法描述</strong>】   广度优先搜索图 g 中 v0 所在的连通子图  </p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">BreadthFirstSearch</span><span class="params">(Graph g,  <span class="keyword">int</span> v0)</span>   <span class="comment">/*广度优先搜索图 g 中 v0 所在的连通子图*/</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">	visit(v0);  </span><br><span class="line">	visited[v0]=True; </span><br><span class="line">	InitQueue(&amp;Q);  <span class="comment">/*初始化空队*/</span>  </span><br><span class="line">	EnterQueue(&amp;Q, v0);  <span class="comment">/* v0 进队*/</span> </span><br><span class="line">	<span class="keyword">while</span> ( ! Empty(Q))   </span><br><span class="line">	&#123; </span><br><span class="line">		DeleteQueue(&amp;Q, &amp;v);  <span class="comment">/*队头元素出队*/</span> </span><br><span class="line">		w=FirstAdjVertex (g, v);  <span class="comment">/*求 v 的第一个邻接点*/</span> </span><br><span class="line">		<span class="keyword">while</span> (w!=<span class="number">-1</span>)    </span><br><span class="line">		&#123; </span><br><span class="line">			<span class="keyword">if</span> (!visited[w])    </span><br><span class="line">			&#123; </span><br><span class="line">				visit(w);  </span><br><span class="line">				visited[w]=True;                      </span><br><span class="line">				EnterQueue(&amp;Q, w);                    </span><br><span class="line">			&#125; </span><br><span class="line">			w=NextAdjVertex (g, v, w);  <span class="comment">/*求 v 相对于 w 的下一个邻接点*/</span>    </span><br><span class="line">		&#125;       </span><br><span class="line">	&#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析上述算法，图中每个顶点至多入队一次，因此外循环次数为 n。当图 g 采用邻接表方式存储，则当结点 v 出队后，内循环次数等于结点 v 的度。对访问 所有顶点的邻接点的总的时间复杂度为 O(d0+d1+d2+…+dn-1)=O(e)，因此图采用 邻接表方式存储，广度优先搜索算法的时间复杂度为 O(n+e)；当图 g 采用邻接 矩阵方式存储，由于找每个顶点的邻接点时，内循环次数等于 n，因此广度优先 搜索算法的时间复杂度为 O(n²)。</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Qimu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://qimubiji.club/2020/11/14/7.3%E5%9B%BE%E7%9A%84%E9%81%8D%E5%8E%86/">http://qimubiji.club/2020/11/14/7.3图的遍历/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://qimubiji.club" target="_blank">亓木</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9B%BE/">图</a></div><div class="post_share"><div class="social-share" data-image="http://www.qimubiji.cloud/PDF%E6%96%87%E4%BB%B6.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/11/14/7.4%E5%9B%BE%E7%9A%84%E8%BF%9E%E9%80%9A%E6%80%A7/"><img class="prev_cover" src="http://www.qimubiji.cloud/%E5%9B%BE.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">7.4图的连通性</div></div></a></div><div class="next-post pull_right"><a href="/2020/11/14/7.5%E6%9C%89%E5%90%91%E6%97%A0%E7%8E%AF%E5%9B%BE%E5%BA%94%E7%94%A8%E4%B9%8B%E6%8B%93%E6%89%91%E6%8E%92%E5%BA%8F/"><img class="next_cover" src="http://www.qimubiji.cloud/%E5%9B%BE.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">7.5有向无环图应用之拓扑排序</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/11/14/7.2图的存储结构/" title="7.2图的存储结构"><img class="relatedPosts_cover" src="http://www.qimubiji.cloud/%E5%9B%BE.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-11-14</div><div class="relatedPosts_title">7.2图的存储结构</div></div></a></div><div class="relatedPosts_item"><a href="/2020/11/14/7.1图的基本概念/" title="7.1图的基本概念"><img class="relatedPosts_cover" src="http://www.qimubiji.cloud/%E5%9B%BE.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-11-14</div><div class="relatedPosts_title">7.1图的基本概念</div></div></a></div><div class="relatedPosts_item"><a href="/2020/11/14/7.4图的连通性/" title="7.4图的连通性"><img class="relatedPosts_cover" src="http://www.qimubiji.cloud/%E5%9B%BE.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-11-14</div><div class="relatedPosts_title">7.4图的连通性</div></div></a></div><div class="relatedPosts_item"><a href="/2020/11/14/7.5有向无环图应用之拓扑排序/" title="7.5有向无环图应用之拓扑排序"><img class="relatedPosts_cover" src="http://www.qimubiji.cloud/%E5%9B%BE.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-11-14</div><div class="relatedPosts_title">7.5有向无环图应用之拓扑排序</div></div></a></div><div class="relatedPosts_item"><a href="/2020/11/14/7.6有向无环图应用之关键路径/" title="7.6有向无环图应用之关键路径"><img class="relatedPosts_cover" src="http://www.qimubiji.cloud/%E5%9B%BE.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-11-14</div><div class="relatedPosts_title">7.6有向无环图应用之关键路径</div></div></a></div><div class="relatedPosts_item"><a href="/2020/11/14/7.7最短路径/" title="7.7最短路径"><img class="relatedPosts_cover" src="http://www.qimubiji.cloud/%E5%9B%BE.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-11-14</div><div class="relatedPosts_title">7.7最短路径</div></div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80OTk5NS8yNjQ4Ng=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></article></main><footer id="footer" style="background-image: url(http://www.qimubiji.cloud/%E5%9B%BE.png)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 By Qimu</div><div class="framework-info"><span>驱动 </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="footer_custom_text">Hi,  welcome  to  my  <a  href="https://qimubiji.club/">blog</a>!</div><div class="icp"><a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"/><span>陕ICP备20006612号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">簡</a><i class="darkmode far fa-moon" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script src="/js/third-party/activate-power-mode.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="/js/third-party/click_heart.js"></script><script src="/js/search/local-search.js"></script></body></html>

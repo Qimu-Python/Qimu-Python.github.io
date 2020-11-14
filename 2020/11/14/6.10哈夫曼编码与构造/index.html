@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>6.10哈夫曼编码与构造 | 亓木</title><meta name="description" content="6.10哈夫曼编码与构造哈夫曼编码由于哈夫曼树是具有相同叶子个数的二叉树中带权路径长度最小的二叉树，涉及求根据给定叶子(带权)求其“规模最小”的二叉树问题，用哈夫曼树构造哈夫曼编码就是其典型应用。  1．哈夫曼编码的概念用电子方式处理符号时，需先对符号进行二进制编码。例如，在计算机中使用的英文字 符的 ASCII 编码就是 8 位二进制编码，ASCII 编码是一种定长编码，即每个字符用相同数目的二"><meta name="keywords" content="哈夫曼树"><meta name="author" content="Qimu"><meta name="copyright" content="Qimu"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="http://www.qimubiji.cloud/favicon.png"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="crossorigin"/><link rel="dns-prefetch" href="https://fonts.googleapis.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="dns-prefetch" href="//busuanzi.ibruce.info"/><meta name="twitter:card" content="summary"><meta name="twitter:title" content="6.10哈夫曼编码与构造"><meta name="twitter:description" content="6.10哈夫曼编码与构造哈夫曼编码由于哈夫曼树是具有相同叶子个数的二叉树中带权路径长度最小的二叉树，涉及求根据给定叶子(带权)求其“规模最小”的二叉树问题，用哈夫曼树构造哈夫曼编码就是其典型应用。  1．哈夫曼编码的概念用电子方式处理符号时，需先对符号进行二进制编码。例如，在计算机中使用的英文字 符的 ASCII 编码就是 8 位二进制编码，ASCII 编码是一种定长编码，即每个字符用相同数目的二"><meta name="twitter:image" content="http://www.qimubiji.cloud/%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91.png"><meta property="og:type" content="article"><meta property="og:title" content="6.10哈夫曼编码与构造"><meta property="og:url" content="http://qimubiji.club/2020/11/14/6.10%E5%93%88%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81%E4%B8%8E%E6%9E%84%E9%80%A0/"><meta property="og:site_name" content="亓木"><meta property="og:description" content="6.10哈夫曼编码与构造哈夫曼编码由于哈夫曼树是具有相同叶子个数的二叉树中带权路径长度最小的二叉树，涉及求根据给定叶子(带权)求其“规模最小”的二叉树问题，用哈夫曼树构造哈夫曼编码就是其典型应用。  1．哈夫曼编码的概念用电子方式处理符号时，需先对符号进行二进制编码。例如，在计算机中使用的英文字 符的 ASCII 编码就是 8 位二进制编码，ASCII 编码是一种定长编码，即每个字符用相同数目的二"><meta property="og:image" content="http://www.qimubiji.cloud/%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91.png"><meta property="article:published_time" content="2020-11-14T04:22:41.438Z"><meta property="article:modified_time" content="2020-06-04T02:29:05.214Z"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>var autoChangeMode = '1'
+var t = Cookies.get("theme")
+if (autoChangeMode == '1'){
+  var isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+  var isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+  var isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined){
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport){
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour < 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+  }
+  } else if (t == 'light') activateLightMode()
+  else activateDarkMode()
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.css"><link rel="canonical" href="http://qimubiji.club/2020/11/14/6.10%E5%93%88%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81%E4%B8%8E%E6%9E%84%E9%80%A0/"><link rel="prev" title="6.4遍历算法应用" href="http://qimubiji.club/2020/11/14/6.4%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8/"><link rel="next" title="6.1树的基本概念" href="http://qimubiji.club/2020/11/14/6.1%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容:${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: {"bookmark":{"message_prev":"按","message_next":"键将本页加入书签"},"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#2d3035","position":"bottom-left"},
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  highlightShrink: 'false',
+  isFontAwesomeV5: true,
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+  
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isSidebar: true  
+  }</script><noscript><style>
+#page-header {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="http://www.qimubiji.cloud/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">58</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">16</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div></div></div><i class="fa fa-arrow-right on" id="toggle-sidebar" aria-hidden="true">     </i><div id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#6-10哈夫曼编码与构造"><span class="toc-number">1.</span> <span class="toc-text">6.10哈夫曼编码与构造</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1．哈夫曼编码的概念"><span class="toc-number">1.1.</span> <span class="toc-text">1．哈夫曼编码的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2．哈夫曼编码的作用"><span class="toc-number">1.2.</span> <span class="toc-text">2．哈夫曼编码的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3．哈夫曼编码的算法实现"><span class="toc-number">1.3.</span> <span class="toc-text">3．哈夫曼编码的算法实现</span></a></li></ol></li></ol></div></div></div><div id="body-wrap"><div class="post-bg" id="nav" style="background-image: url(http://www.qimubiji.cloud/%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91.png)"><div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">亓木</a></span><span class="pull_right menus"><div id="search_button"><a class="site-page social-icon search"><i class="fa fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于</span></a></div></div><span class="toggle-menu close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span></span></div><div id="post-info"><div id="post-title"><div class="posttitle">6.10哈夫曼编码与构造</div></div><div id="post-meta"><div class="meta-firstline"><time class="post-meta__date"><span class="post-meta__date-created" title="发表于 2020-11-14 12:22:41"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2020-11-14</span><span class="post-meta__separator">|</span><span class="post-meta__date-updated" title="更新于 2020-06-04 10:29:05"><i class="fa fa-history" aria-hidden="true"></i> 更新于 2020-06-04</span></time><span class="post-meta__categories"><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%94%E8%AE%B0/">数据结构笔记</a></span></div><div class="meta-secondline"> <span class="post-meta-wordcount"><i class="post-meta__icon far fa-file-word" aria-hidden="true"></i><span>字数总计:</span><span class="word-count">1.8k</span><span class="post-meta__separator">|</span><i class="post-meta__icon far fa-clock" aria-hidden="true"></i><span>阅读时长: 5 分钟</span></span></div><div class="meta-thirdline"><span class="post-meta-pv-cv"><span class="post-meta__separator">|</span><i class="fa fa-eye post-meta__icon" aria-hidden="true"> </i><span>阅读量:</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-commentcount"></span></div></div></div></div><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="6-10哈夫曼编码与构造"><a href="#6-10哈夫曼编码与构造" class="headerlink" title="6.10哈夫曼编码与构造"></a>6.10哈夫曼编码与构造</h1><p><strong>哈夫曼编码</strong><br>由于哈夫曼树是具有相同叶子个数的二叉树中带权路径长度最小的二叉树，涉及求根据给定叶子(带权)求其“规模最小”的二叉树问题，用哈夫曼树构造哈夫曼编码就是其典型应用。 </p>
+<h2 id="1．哈夫曼编码的概念"><a href="#1．哈夫曼编码的概念" class="headerlink" title="1．哈夫曼编码的概念"></a>1．哈夫曼编码的概念</h2><p>用电子方式处理符号时，需先对符号进行二进制编码。例如，在计算机中使用的英文字 符的 ASCII 编码就是 8 位二进制编码，ASCII 编码是一种定长编码，即每个字符用相同数目的二进制位编码。 </p>
+<p>为了缩短数据文件（报文）长度，可采用不定长编码。其基本思想是，给使用频度较高 的字符编以较短的编码。这是数据压缩技术的最基本的思想。如何给数据文件中的字符编以不定长编码，使各种数据文件平均最短呢？这也是个与哈夫曼树相关的最优问题。通过实例介绍概念。</p>
+<ul>
+<li>（1）<strong>前缀码</strong>：如果在一个编码系统中，任一个编码都不是其他任何编码的前缀（最左 子串），则称该编码系统中的编码是前缀码。例如，一组编码 01，001，010，100，110 就不 是前缀码，因为 01 是 010 的前缀，若去掉 01 或 010 就是前缀码。例如，名字中的郑霞、郑霞锦就不是前缀码。 </li>
+<li>若是前缀码，则在电文中，各字符对应的编码之间不需要分隔符。如果不是前缀码，则 若不使用分隔符，会产生二义性。 </li>
+<li>（2）<strong>哈夫曼编码</strong>：对一棵具有 n 个叶子的哈夫曼树，若对树中的每个左分支赋予 0， 右分支赋予 1（也可规定左 1 右 0），则从根到每个叶子的通路上，各分支的赋值分别构成一 个二进制串，该二进制串就称为哈夫曼编码。 </li>
+</ul>
+<p>下面给出哈夫曼编码的相关特性。</p>
+<p><strong>定理 6-1</strong>  哈夫曼编码是前缀码。 </p>
+<ul>
+<li><strong>证明</strong>：哈夫曼编码是根到叶子路径上的边的编码的序列，也就是等价边序列，而由树的 特点可知，若路径 A 是另一条路经 B 的最左部分，则 B 经过了 A，因此，A 的终点不是叶子。 而哈夫曼编码都对应终点为叶子的路径，所以，任一哈夫曼码都不会与任意其他哈夫曼编码 的前部分完全重叠，因此哈夫曼编码是前缀码。 </li>
+</ul>
+<p><strong>定理 6-2</strong>  哈夫曼编码是最优前缀码。<br>即对于 n 个字符，分别以它们的使用频度为叶子权构造哈夫曼树，则该树对应的哈夫曼编码能使各种报文（由这 n 种字符构成的文本）对应的二进制串的平均长度最短。<br><img src="https://img-blog.csdnimg.cn/20200604095318107.png#pic_center" alt="在这里插入图片描述"><br>由哈夫曼树的构造方法知，使用频度较高的字符对应的编码较短，这也直观地说明了本定理。</p>
+<h2 id="2．哈夫曼编码的作用"><a href="#2．哈夫曼编码的作用" class="headerlink" title="2．哈夫曼编码的作用"></a>2．哈夫曼编码的作用</h2><p>哈夫曼树被广泛的应用，最典型的就是在编码技术上的应用。利用哈夫曼树，可以得到平均长度最短的编码。 </p>
+<p>研究操作码的优化问题主要是为了缩短指令字的长度，减少程序的总长度以及增加指令所能表示的操作信息和地址信息。要对操作码进行优化，就要知道每种操作指令在程序 中的使用频率。这一般是通过对大量已有的典型程序进行统计得到的。 </p>
+<p>这里以计算机操作码的优化问题为例来分析说明。 </p>
+<blockquote>
+<p>例 6-7  设有一台模型机，共有 7 种不同的指令，其使用频率如表 6-5 所示</p>
+</blockquote>
+<p> <img src="https://img-blog.csdnimg.cn/20200604095440933.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dpdGhvdXRFbmRGcmVl,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>由于计算机内部只能识别 0、1 代码，所以若采用定长操作码，则需要 3 位（23＝8）。 一段程序中若有 n 条指令，每条指令编码占 3 位，那么程序的总位数为 3×n。为了充分地 利用编码信息和减少程序的总位数，我们可以采用变长编码。如果对每一条指令指定一条编码，并使这些编码互不相同且最短，是否可以满足要求呢？可否采用如表 6-6 所示这样编码呢？ </p>
+<p><img src="https://img-blog.csdnimg.cn/20200604095517475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dpdGhvdXRFbmRGcmVl,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>这样虽然可以使得程序的总位数达到最小，但机器却无法解码。例如，对编码串 0010110 该怎么识别呢？第一个 0 可以识别为 I1，也可以和第二个 0 组成的串 00 一起被识别为 I3， 还可以将前三位识别为 I6，这样一来，这个编码串就有多种译法。因此，若要设计变长的编 码，则这种编码必须满足这样一个条件：任意一个编码不能成为其他任意编码的前缀。把满足这个条件的编码叫做<strong>前缀编码</strong>。</p>
+<p>利用哈夫曼算法，就可以设计出最优的前缀编码。首先，以每条指令的使用频率为权值构造哈夫曼树，据表 6-5 构造的哈夫曼树如图所示。<br><img src="https://img-blog.csdnimg.cn/20200604095607323.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dpdGhvdXRFbmRGcmVl,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p>对于该哈夫曼树，规定向左的分支标记为 0，向右的分支标记为 1，如下图所示。这样， 从根结点开始，沿线到达各频度指令对应的叶结点，每个叶结点对应的编码长度不等，但最 长不超过 n，所经过的分支代码序列，就构成了相应频度指令的哈夫曼编码，如表 6-7 所示。<br><img src="https://img-blog.csdnimg.cn/20200604095634807.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dpdGhvdXRFbmRGcmVl,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200604095745811.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dpdGhvdXRFbmRGcmVl,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h2 id="3．哈夫曼编码的算法实现"><a href="#3．哈夫曼编码的算法实现" class="headerlink" title="3．哈夫曼编码的算法实现"></a>3．哈夫曼编码的算法实现</h2><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span>  <span class="keyword">char</span> *  HuffmanCode[N+<span class="number">1</span>];   <span class="comment">/* 存储哈夫曼编码串的头指针数组 */</span></span><br></pre></td></tr></table></figure>
+<p>由于每个哈夫曼编码是变长编码，因此使用指针数组存放每个编码串的头指针。 </p>
+<p>【<strong>算法描述</strong>】  求哈夫曼树的哈夫曼编码的算法</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CrtHuffmanCode</span><span class="params">(HuffmanTree  ht,  HuffmanCode  hc,  <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"><span class="comment">/*从叶子结点到根，逆向求每个叶子结点对应的哈夫曼编码*/</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">	<span class="keyword">char</span> *cd; </span><br><span class="line">	cd=(<span class="keyword">char</span> * )<span class="built_in">malloc</span>(n* <span class="keyword">sizeof</span>(<span class="keyword">char</span> ));         <span class="comment">/*分配求当前编码的工作空间*/</span> </span><br><span class="line">	cd[n<span class="number">-1</span>]＝’\<span class="number">0</span>’；      <span class="comment">/*从右向左逐位存放编码，首先存放编码结束符*/</span> </span><br><span class="line">	<span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;=n;i++)     <span class="comment">/*求 n 个叶子结点对应的哈夫曼编码*/</span> </span><br><span class="line">	&#123; </span><br><span class="line">		start=n<span class="number">-1</span>;             <span class="comment">/*初始化编码起始指针*/</span> </span><br><span class="line">		c=i; </span><br><span class="line">		p=ht[i].parent;    <span class="comment">/* 从叶子结点开始向上倒推 */</span> </span><br><span class="line">		<span class="keyword">while</span>(p!=<span class="number">0</span>) </span><br><span class="line">		&#123; </span><br><span class="line">			--start; </span><br><span class="line">			<span class="keyword">if</span>(ht[p].LChild==c)  </span><br><span class="line">				cd[start]=’<span class="number">0</span>’;       <span class="comment">/*左分支标 0*/</span> </span><br><span class="line">			<span class="keyword">else</span>  </span><br><span class="line">				cd[start]=’<span class="number">1</span>’;                    <span class="comment">/*右分支标 1*/</span> </span><br><span class="line">			c=p;  </span><br><span class="line">			p=ht[p].parent;                  <span class="comment">/* 向上倒推 */</span> </span><br><span class="line">		&#125;   </span><br><span class="line">		hc[i]=(<span class="keyword">char</span> *)<span class="built_in">malloc</span>((n-start)*<span class="keyword">sizeof</span>(<span class="keyword">char</span>));    <span class="comment">/*为第 i 个编码分配空间*/</span> </span><br><span class="line">		<span class="built_in">strcpy</span>(hc[i], &amp;cd[start]);                    <span class="comment">/*把编码复制到 hc[i]中*/</span> </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="built_in">free</span>(cd); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Qimu</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://qimubiji.club/2020/11/14/6.10%E5%93%88%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81%E4%B8%8E%E6%9E%84%E9%80%A0/">http://qimubiji.club/2020/11/14/6.10哈夫曼编码与构造/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://qimubiji.club" target="_blank">亓木</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%93%88%E5%A4%AB%E6%9B%BC%E6%A0%91/">哈夫曼树</a></div><div class="post_share"><div class="social-share" data-image="http://www.qimubiji.cloud/PDF%E6%96%87%E4%BB%B6.png" data-sites="wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"/><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js"></script></div></div><nav class="pagination_post" id="pagination"><div class="prev-post pull_left"><a href="/2020/11/14/6.4%E9%81%8D%E5%8E%86%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8/"><img class="prev_cover" src="http://www.qimubiji.cloud/%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">6.4遍历算法应用</div></div></a></div><div class="next-post pull_right"><a href="/2020/11/14/6.1%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/"><img class="next_cover" src="http://www.qimubiji.cloud/%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">6.1树的基本概念</div></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2020/11/14/6.9哈夫曼树及其构造/" title="6.9哈夫曼树及其构造"><img class="relatedPosts_cover" src="http://www.qimubiji.cloud/%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91.png"><div class="relatedPosts_main is-center"><div class="relatedPosts_date"><i class="fa fa-calendar fa-fw" aria-hidden="true"></i> 2020-11-14</div><div class="relatedPosts_title">6.9哈夫曼树及其构造</div></div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="lv-container" data-id="city" data-uid="MTAyMC80OTk5NS8yNjQ4Ng=="><script>(function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+})(document, 'script');</script></div></div></article></main><footer id="footer" style="background-image: url(http://www.qimubiji.cloud/%E6%A0%91%E5%92%8C%E4%BA%8C%E5%8F%89%E6%A0%91.png)" data-type="photo"><div id="footer-wrap"><div class="copyright">&copy;2020 By Qimu</div><div class="framework-info"><span>驱动 </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div><div class="footer_custom_text">Hi,  welcome  to  my  <a  href="https://qimubiji.club/">blog</a>!</div><div class="icp"><a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action" target="_blank" rel="noopener"><img class="icp-icon" src="/img/icp.png"/><span>陕ICP备20006612号</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><i class="fa fa-book" id="readmode" title="阅读模式"></i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">簡</a><i class="darkmode far fa-moon" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><a id="to_comment" href="#post-comment" title="直达评论"><i class="scroll_to_comment fa fa-comments">  </i></a><i class="fa fa-list-ul close" id="mobile-toc-button" title="目录" aria-hidden="true"></i><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a href="https://github.com/wzpan/hexo-generator-search" target="_blank" rel="noopener" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar/dist/snackbar.min.js"></script><script id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><script src="/js/third-party/activate-power-mode.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+document.body.addEventListener('input', POWERMODE);
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="/js/third-party/click_heart.js"></script><script src="/js/search/local-search.js"></script></body></html>
